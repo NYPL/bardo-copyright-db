@@ -3,7 +3,7 @@ flasgger
 flask-sqlalchemy
 lccnorm
 lxml
-psycopg2-binary
+psycopg2-binary=2.8.5
 pygithub
 pyyaml
 sqlalchemy
