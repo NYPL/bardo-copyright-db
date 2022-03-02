@@ -1,13 +1,14 @@
 import os
 from flask import Flask
 from flasgger import Swagger
+from api.prints.swagger.swag import SwaggerDoc
 from waitress import serve
 
 from api.db import db
 from api.elastic import elastic
 from api.prints import base, search, uuid
 
-def run():
+def run(env):
     application = Flask(__name__)
     application.register_blueprint(base.bp)
     application.register_blueprint(search.search)
@@ -29,11 +30,12 @@ def run():
 
     db.init_app(application)
     elastic.init_app(application)
-    swagger = Swagger(application)
+    docs = SwaggerDoc()
+    Swagger(application, template=docs.getDocs())
 
-    if 'local' in os.environ['ENVIRONMENT']:
+    if 'local' in env:
         application.config['ENV'] = 'development'
         application.config['DEBUG'] = True
         application.run()
     else:
-        serve(self.app, host='0.0.0.0', port=80)
+        serve(application, host='0.0.0.0', port=80)

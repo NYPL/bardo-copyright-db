@@ -106,4 +106,4 @@ if __name__ == '__main__':
             reinit=args.REINITIALIZE
         )
     elif args.mode == 'api':
-        run()
+        run(args.environment)

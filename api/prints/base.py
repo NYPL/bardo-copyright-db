@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect
+from flask import Blueprint, redirect, url_for
 
 from model.cce import CCE
 
@@ -8,4 +8,5 @@ APP_VERSION = 'v0.1'
 
 @bp.route('/')
 def query():
-    return redirect('/apidocs')
+    print('hello?')
+    return redirect(url_for('flasgger.apidocs'))
