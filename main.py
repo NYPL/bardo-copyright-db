@@ -4,7 +4,7 @@ import os
 import yaml
 
 
-def main(secondsAgo=None, year=None, exclude=None, reinit=False):
+def pipeline(secondsAgo=None, year=None, exclude=None, reinit=False):
     manager = SessionManager()
     manager.generateEngine()
     manager.initializeDatabase(reinit)
@@ -47,6 +47,20 @@ def parseArgs():
     parser = argparse.ArgumentParser(
         description='Load CCE XML and CCR TSV into PostgresQL'
     )
+    parser.add_argument(
+        '-m', '--mode',
+        type=str,
+        required=True,
+        help='Mode to run current script in: pipeline or api',
+        choices=['pipeline', 'api']
+    )
+    parser.add_argument(
+        '-e', '--environment',
+        type=str,
+        required=True,
+        help='Environment to run current invocation in',
+        choices=['local', 'qa', 'prod']
+    )
     parser.add_argument('-t', '--time', type=int, required=False,
         help='Time ago in seconds to check for file updates'
     )
@@ -61,8 +75,9 @@ def parseArgs():
     return parser.parse_args()
 
 
-def loadConfig():
-    with open('config.yaml', 'r') as yamlFile:
+def loadConfig(env):
+    configFile = f'{env}_config.yaml'
+    with open(configFile, 'r') as yamlFile:
         config = yaml.safe_load(yamlFile)
         for section in config:
             sectionDict = config[section]
@@ -73,7 +88,7 @@ def loadConfig():
 if __name__ == '__main__':
     args = parseArgs()
     try:
-        loadConfig()
+        loadConfig(args.environment)
     except FileNotFoundError:
         pass
 
@@ -81,10 +96,14 @@ if __name__ == '__main__':
     from builder import CCEReader, CCEFile
     from renBuilder import CCRReader, CCRFile
     from esIndexer import ESIndexer
+    from api.app import run
 
-    main(
-        secondsAgo=args.time,
-        year=args.year,
-        exclude=args.exclude,
-        reinit=args.REINITIALIZE
-    )
+    if args.mode == 'pipeline':
+        pipeline(
+            secondsAgo=args.time,
+            year=args.year,
+            exclude=args.exclude,
+            reinit=args.REINITIALIZE
+        )
+    elif args.mode == 'api':
+        run()
