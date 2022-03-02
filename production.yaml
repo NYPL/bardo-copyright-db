@@ -1,0 +1,18 @@
+DATABASE:
+  # DB_USER: configured via ssm
+  # DB_PSWD: configured via ssm
+  DB_HOST: sfr-bardo-copyright-development.cicyc5fazypj.us-east-1.rds.amazonaws.com
+  DB_PORT: '5432'
+  DB_NAME: sfr_bardo_cce
+
+GITHUB:
+  # ACCESS_TOKEN: configured via ssm
+  CCE_REPO: nypl/catalog_of_copyright_entries_project
+  CCR_REPO: nypl/cce-renewals
+
+ELASTICSEARCH:
+  ES_CCE_INDEX: cce
+  ES_CCR_INDEX: ccr
+  # ES_HOST: configure via ssm
+  ES_PORT: '80'
+  ES_TIMEOUT: '15' 
