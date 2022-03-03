@@ -38,4 +38,4 @@ def run(env):
         application.config['DEBUG'] = True
         application.run()
     else:
-        serve(application, host='0.0.0.0', port=80)
+        serve(application, host='0.0.0.0', port=os.environ['API_PORT'])
