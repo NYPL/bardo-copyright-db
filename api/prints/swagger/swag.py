@@ -15,7 +15,7 @@ class SwaggerDoc():
                 "email": "michaelbenowitz@nypl.org",
                 "url": "www.nypl.org",
                 },
-                "version": "v0.1"
+                "version": "v0.0.1"
             },
             "basePath": "/",  # base bash for blueprint registration
             "schemes": [
