@@ -1,3 +1,5 @@
+import os
+
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search, Q
 
@@ -6,7 +8,8 @@ class Elastic():
         self.client = None
     
     def init_app(self, app):
-        self.client = Elasticsearch(app.config['ELASTICSEARCH_INDEX_URI'])
+        host = f'{os.environ["ES_HOST"]}:{os.environ["ES_PORT"]}'
+        self.client = Elasticsearch(hosts=[host])
     
     def create_search(self, index):
         return Search(using=self.client, index=index)

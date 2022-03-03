@@ -1,6 +1,4 @@
-from flask import (
-    Blueprint, request, session, url_for, redirect, current_app, jsonify
-)
+from flask import Blueprint, request, jsonify
 from sqlalchemy.orm.exc import NoResultFound
 
 from api.db import db, QueryManager

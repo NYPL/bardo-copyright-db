@@ -3,7 +3,4 @@ config.yaml
 *.pyc
 *.xml
 *.code-workspace
-# Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml
+local_config.yaml

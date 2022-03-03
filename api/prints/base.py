@@ -1,12 +1,10 @@
-from flask import (
-    Blueprint, request, session, url_for, redirect, current_app, jsonify
-)
+from flask import Blueprint, redirect, url_for
 
 from model.cce import CCE
 
 bp = Blueprint('base', __name__, url_prefix='/')
 
-APP_VERSION = 'v0.1'
+APP_VERSION = 'v0.0.1'
 
 @bp.route('/')
 def query():
