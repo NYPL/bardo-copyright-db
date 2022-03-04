@@ -59,7 +59,7 @@ def parseArgs():
         type=str,
         required=True,
         help='Environment to run current invocation in',
-        choices=['local', 'qa', 'prod']
+        choices=['local', 'qa', 'production']
     )
     parser.add_argument('-t', '--time', type=int, required=False,
         help='Time ago in seconds to check for file updates'
