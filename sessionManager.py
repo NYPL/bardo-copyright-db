@@ -1,5 +1,5 @@
 import os
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, inspect
 from sqlalchemy.orm import sessionmaker
 
 from model.core import Base
@@ -31,7 +31,7 @@ class SessionManager():
 
     def initializeDatabase(self, reinit=False):
         if reinit: Base.metadata.drop_all(self.engine, checkfirst=True)
-        if not self.engine.dialect.has_table(self.engine, 'cce'):
+        if not inspect(self.engine).has_table('cce'):
             Base.metadata.create_all(self.engine)
 
     def createSession(self, autoflush=True):
