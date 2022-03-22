@@ -1,22 +1,14 @@
 import os
 from datetime import datetime
-from elasticsearch.helpers import bulk, BulkIndexError, streaming_bulk
+from elasticsearch.helpers import BulkIndexError, streaming_bulk
 from elasticsearch import Elasticsearch
-from elasticsearch.exceptions import (
-    ConnectionError,
-    TransportError,
-    ConflictError
-)
+from elasticsearch.exceptions import ConnectionError
 from elasticsearch_dsl import connections
-from elasticsearch_dsl.wrappers import Range
 
-from sqlalchemy import or_
-from sqlalchemy.orm import configure_mappers, raiseload
-from sqlalchemy.dialects import postgresql
+from sqlalchemy.orm import configure_mappers
 
 from model.cce import CCE as dbCCE
 from model.renewal import Renewal as dbRenewal
-from model.registration import Registration as dbRegistration
 from model.elastic import (
     CCE,
     Registration,
@@ -26,12 +18,12 @@ from model.elastic import (
 
 
 class ESIndexer():
-    def __init__(self, manager, loadFromTime):
+    def __init__(self, manager, startTime):
         self.cce_index = os.environ['ES_CCE_INDEX']
         self.ccr_index = os.environ['ES_CCR_INDEX']
         self.client = None
         self.session = manager.session
-        self.loadFromTime = loadFromTime if loadFromTime else datetime.strptime('1970-01-01', '%Y-%m-%d')
+        self.startTime = startTime if startTime else datetime.strptime('1970-01-01', '%Y-%m-%d')
 
         self.createElasticConnection()
         self.createIndex()
@@ -96,13 +88,13 @@ class ESIndexer():
 
     def retrieveEntries(self):
         retQuery = self.session.query(dbCCE)\
-            .filter(dbCCE.date_modified > self.loadFromTime)
+            .filter(dbCCE.date_modified >= self.startTime)
         for cce in retQuery.all():
             yield cce
     
     def retrieveRenewals(self):
         renQuery = self.session.query(dbRenewal)\
-            .filter(dbRenewal.date_modified > self.loadFromTime)
+            .filter(dbRenewal.date_modified >= self.startTime)
         for ccr in renQuery.all():
             yield ccr
 
