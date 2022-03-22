@@ -5,13 +5,14 @@ import yaml
 
 
 def pipeline(secondsAgo=None, year=None, exclude=None, reinit=False):
+    startTime = datetime.now()
+
     manager = SessionManager()
     manager.generateEngine()
     manager.initializeDatabase(reinit)
     manager.createSession()
 
     loadFromTime = None
-    startTime = datetime.now()
     if secondsAgo is not None:
         loadFromTime = startTime - timedelta(seconds=secondsAgo)
 
@@ -20,7 +21,7 @@ def pipeline(secondsAgo=None, year=None, exclude=None, reinit=False):
     if exclude != 'ccr':
         loadCCR(manager, loadFromTime, year)
     
-    indexUpdates(manager, loadFromTime)
+    indexUpdates(manager, startTime)
     
     manager.closeConnection()
     
@@ -37,8 +38,8 @@ def loadCCR(manager, loadFromTime, selectedYear):
     ccrReader.loadYears(selectedYear, loadFromTime)
     ccrReader.importYears()
 
-def indexUpdates(manager, loadFromTime):
-    esIndexer = ESIndexer(manager, None)
+def indexUpdates(manager, startTime):
+    esIndexer = ESIndexer(manager, startTime)
     esIndexer.indexRecords(recType='cce')
     esIndexer.indexRecords(recType='ccr')
 
