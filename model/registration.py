@@ -24,7 +24,7 @@ class Registration(Core, Base):
     reg_date = Column(Date)
     reg_date_text = Column(Unicode)
 
-    cce_id = Column(Integer, ForeignKey('cce.id'), index=True)
+    cce_id = Column(Integer, ForeignKey('cce.id', ondelete="CASCADE"), index=True)
 
     def __repr__(self):
         return '<Registration(regnum={}, date={})>'.format(self.regnum, self.reg_date_text)

@@ -21,5 +21,5 @@ class LCCN(Core, Base):
     id = Column(Integer, primary_key=True)
     lccn = Column(Unicode, nullable=False, index=True)
 
-    cce_id = Column(Integer, ForeignKey('cce.id'), index=True)
+    cce_id = Column(Integer, ForeignKey('cce.id', ondelete="CASCADE"), index=True)
     

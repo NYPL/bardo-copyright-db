@@ -21,14 +21,14 @@ def compile_xml(type_, compiler, **kw):
 ENTRY_XML = Table(
     'entry_xml',
     Base.metadata,
-    Column('cce_id', Integer, ForeignKey('cce.id'), index=True),
+    Column('cce_id', Integer, ForeignKey('cce.id', ondelete="CASCADE"), index=True),
     Column('xml_id', Integer, ForeignKey('xml.id'), index=True)
 )
 
 ERROR_XML = Table(
     'error_entry_xml',
     Base.metadata,
-    Column('error_cce_id', Integer, ForeignKey('error_cce.id'), index=True),
+    Column('error_cce_id', Integer, ForeignKey('error_cce.id', ondelete="CASCADE"), index=True),
     Column('xml_id', Integer, ForeignKey('xml.id'), index=True)
 )
 
@@ -40,11 +40,15 @@ class XML(Core, Base):
     entry = relationship(
         'CCE',
         secondary=ENTRY_XML,
-        backref='xml_sources'
+        backref='xml_sources',
+        cascade='all, delete', 
+        passive_deletes=True
     )
 
     error_entry = relationship(
         'ErrorCCE',
         secondary=ERROR_XML,
-        backref='xml_sources'
+        backref='xml_sources',
+        cascade='all, delete', 
+        passive_deletes=True
     )

@@ -32,7 +32,7 @@ class ErrorCCE(Core, Base):
     page_position = Column(Integer)
     reason = Column(Unicode)
 
-    volume_id = Column(Integer, ForeignKey('volume.id'))
+    volume_id = Column(Integer, ForeignKey('volume.id', ondelete="CASCADE"))
 
     def __repr__(self):
         return '<ErrorCCE(regnum={}, uuid={})>'.format(self.regnum, self.uuid)
