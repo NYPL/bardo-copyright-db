@@ -10,3 +10,4 @@
 ### Added
 - Initial commit of dockerized CCE/CCR Search API
 - ON DELETE CASCADE settings for Volume entries and associated child entries
+- Added delete-orphan settings back to cce model
