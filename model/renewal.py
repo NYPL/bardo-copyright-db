@@ -23,7 +23,7 @@ RENEWAL_REG = Table(
     'renewal_registration',
     Base.metadata,
     Column('renewal_id', Integer, ForeignKey('renewal.id'), index=True),
-    Column('registration_id', Integer, ForeignKey('registration.id'), index=True)
+    Column('registration_id', Integer, ForeignKey('registration.id', ondelete="CASCADE"), index=True)
 )
 
 
@@ -51,7 +51,8 @@ class Renewal(Core, Base):
     registrations = relationship(
         'Registration',
         secondary=RENEWAL_REG,
-        backref='renewals'
+        backref='renewals', cascade='all, delete', 
+        passive_deletes=True
     )
 
     def __repr__(self):

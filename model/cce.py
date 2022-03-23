@@ -41,12 +41,12 @@ class CCE(Core, Base):
     aff_date = Column(Date)
     aff_date_text = Column(Unicode)
 
-    volume_id = Column(Integer, ForeignKey('volume.id'))
+    volume_id = Column(Integer, ForeignKey('volume.id', ondelete="CASCADE"))
 
-    registrations = relationship('Registration', backref='cce')
-    lccns = relationship('LCCN', backref='cce', cascade='all, delete-orphan')
-    authors = relationship('Author', backref='cce', cascade='all, delete-orphan')
-    publishers = relationship('Publisher', backref='cce', cascade='all, delete-orphan')
+    registrations = relationship('Registration', backref='cce', cascade='all, delete-orphan', passive_deletes=True)
+    lccns = relationship('LCCN', backref='cce', cascade='all, delete-orphan', passive_deletes=True)
+    authors = relationship('Author', backref='cce', cascade='all, delete-orphan', passive_deletes=True)
+    publishers = relationship('Publisher', backref='cce', cascade='all, delete-orphan', passive_deletes=True)
 
     def __repr__(self):
         return '<CCE(regnums={}, uuid={}, title={})>'.format(self.registrations, self.uuid, self.title)

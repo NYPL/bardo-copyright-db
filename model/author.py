@@ -22,7 +22,7 @@ class Author(Core, Base):
     name = Column(Unicode, nullable=False, index=True)
     primary = Column(Boolean, index=True)
 
-    cce_id = Column(Integer, ForeignKey('cce.id'), index=True)
+    cce_id = Column(Integer, ForeignKey('cce.id', ondelete="CASCADE"), index=True)
 
     def __repr__(self):
         return '<Author(name={}, primary={})>'.format(self.name, self.primary)

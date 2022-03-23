@@ -30,8 +30,8 @@ class Volume(Core, Base):
     start_number = Column(Integer)
     end_number = Column(Integer)
 
-    entries = relationship('CCE', backref='volume')
-    error_entries = relationship('ErrorCCE', backref='volume')
+    entries = relationship('CCE', backref='volume', cascade='all, delete', passive_deletes=True)
+    error_entries = relationship('ErrorCCE', backref='volume', cascade='all, delete', passive_deletes=True)
 
     def __repr__(self):
         return '<Volume(series={}, volume={}, year={})>'.format(self.series, self.volume, self.year)

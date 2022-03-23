@@ -22,7 +22,7 @@ class Publisher(Core, Base):
     name = Column(Unicode, nullable=False, index=True)
     claimant = Column(Boolean, index=True)
 
-    cce_id = Column(Integer, ForeignKey('cce.id'), index=True)
+    cce_id = Column(Integer, ForeignKey('cce.id', ondelete="CASCADE"), index=True)
     
     def __repr__(self):
         return '<Publisher(name={}, claimant={})>'.format(self.name, self.claimant)
